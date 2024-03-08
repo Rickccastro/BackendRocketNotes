@@ -18,11 +18,11 @@ class SessionController{
         const passwordMatched = compare(password, user.password)
 
         if(!passwordMatched){
-            console.log(typeof password)
-            console.log(typeof user.password)
-            throw new AppError("senha incorreta",401)
+
+        throw new AppError("senha incorreta",401)
 
         }
+        
         const { secret, expiresIn } = authConfig.jwt;
 
         const token = sign({}, secret, {
