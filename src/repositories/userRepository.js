@@ -1,6 +1,6 @@
 const sqliteConnection = require('../database/sqlite')
 
-class userRespository{
+class UserRespository{
 
     async findByEmail(email){
         const database = await sqliteConnection();
@@ -15,12 +15,10 @@ class userRespository{
             "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
             [name, email, password]
           );
-
-          console.log(name,email,password)
-
+          
           return {id:userId };
     }
 
 }
 
-module.exports=userRespository;
+module.exports=UserRespository;

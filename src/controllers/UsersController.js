@@ -1,27 +1,19 @@
-const AppError = require('../utils/appError')
 const sqliteConnection = require('../database/sqlite')
-const { hash ,compare} = require('bcryptjs')
 const { application } = require('express')
-const userRespository =require ("../repositories/userRepository.js")
+const UserRespository =require ("../repositories/UserRepository.js")
+
+const UserCreateServices = require("../services/UserCreateServices.js")
 
 class UsersController {
   
   async create(request, response) {
     const { name, email, password } = request.body
-
-    const respository = new userRespository();
-
-    const database = await sqliteConnection();
-
-    const checkUserExists = await respository.findByEmail(email);
-
-    if (checkUserExists){
-      throw new AppError("Este e-mail já está em uso.")
-    }
-    const hashedPassword = await hash(password, 8)
-
-    await respository.createUser({name, email, password: hashedPassword});
     
+    const userRepository = new UserRespository();
+    const userCreateServices = new UserCreateServices(userRepository);
+    
+    await userCreateServices.execute({name,email,password});
+
 
     return response.status(201).json()
   }
